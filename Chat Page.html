@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - WhatsApp Clone</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+        <h2>Chat between you and {{ chat.participants.exclude(user=request.user).first }}</h2>
+    
+        <ul>
+            {% for message in chat.messages.all %}
+                <li>
+                    <strong>{{ message.sender.user.username }}:</strong> {{ message.content }} <em>{{ message.timestamp }}</em>
+                </li>
+            {% endfor %}
+        </ul>
+    
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Send Message</button>
+        </form>
+    
+        <a href="{% url 'home' %}">Back to Chats</a>
+</body>
+</html>
